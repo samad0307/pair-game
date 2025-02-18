@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style3.css">
+</head>
+
+<body>
+    <main class="main">
+        <h1>Pairs run Game</h1>
+        <!-- <p>Click a Tile and and then try Match it</p>-->
+        <div class="container">
+            <div class="game">
+                <button class="box"
+                    data-number="1"></button><!--data-number is stored the extra information in the code-->
+                <button class="box" data-number="2"></button>
+                <button class="box" data-number="1"></button>
+                <button class="box" data-number="4"></button>
+                <button class="box" data-number="5"></button>
+                <button class="box" data-number="6"></button>
+                <button class="box" data-number="2"></button>
+                <button class="box" data-number="3"></button>
+                <button class="box" data-number="5"></button>
+                <button class="box" data-number="4"></button>
+                <button class="box" data-number="6"></button>
+                <button class="box" data-number="3"></button>
+            </div>
+        </div>
+        <div class="section">
+            <div class="moves">
+                <h1 id="move">0</h1>
+                <p>Moves</p>
+            </div>
+            <div class="score">
+                <h1 id="score">0</h1>
+                <p>Toatal Score</p>
+            </div>
+        </div>
+        <div class="container-2">
+            <button id="reset-btn">Restart Game</button>
+        </div>
+
+    </main>
+
+    <script>
+        let boxes = Array.from(document.querySelectorAll('.box'));
+        let scoreElement = document.getElementById('score');
+        let resetBtn = document.getElementById("reset-btn");
+        let movesElement = document.getElementById('move');
+        let score = 0;
+        let move = 0;
+        let selectedCards = [];
+        boxes.forEach((box) => {
+            box.addEventListener("click", function () {
+                if (selectedCards.length === 1) {
+                        move += 1;
+                        movesElement.textContent = move;
+                    }
+                if (selectedCards.length < 2 && !this.textContent) {
+                    let number = this.getAttribute('data-number');
+                    this.textContent = number;
+                    selectedCards.push(this);
+                }
+                
+                if (selectedCards.length === 2) {
+                    let [first, second] = selectedCards;
+                    if (first.getAttribute('data-number') === second.getAttribute('data-number')) {
+                        score += 10;
+                        scoreElement.textContent = score;
+                        first.classList.add("matched");
+                        second.classList.add("matched");
+                    }
+                    else {
+                        setTimeout(() => {
+                            first.textContent = "";
+                            second.textContent = "";
+
+                        }, 300);
+
+                    }
+                    
+                    selectedCards = [];
+                }
+            });
+        });
+
+        resetBtn.addEventListener("click", function () {
+            selectedCards = [];
+            score = 0;
+            scoreElement.textContent = score;
+            boxes.forEach((box) => {
+                box.textContent = "";
+            })
+        })
+
+
+
+
+
+    </script>
+</body>
+
+</html>
